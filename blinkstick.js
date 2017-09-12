@@ -4,19 +4,22 @@
  * @module blinkstick
  */
 
-var isWin = /^win/.test(process.platform),
-    usb;
+var isWin = /^win/.test(process.platform);
+var usb;
 
 if (isWin) {
-	//v0.11.13 of Node.js introduced changes to the API which require 
-	//a new version of precompiled HID.node for Windows platforms
-	if (compareVersions(process.version, '0.11.13')) {
-		usb = require('./platform/windows/HID_0.3.2-patched.node');
-	} else {
-		usb = require('./platform/windows/HID.node');
-	}
+  //v0.11.13 of Node.js introduced changes to the API which require
+  //a new version of precompiled HID.node for Windows platforms
+  if (compareVersions(process.version, '4.0.0')) {
+    usb = require('node-hid');
+  } else if (compareVersions(process.version, '0.11.13')) {
+    usb = require('./platform/windows/HID_0.3.2-patched.node');
+  } else {
+    usb = require('./platform/windows/HID.node');
+  }
+
 } else {
-    usb = require('usb');
+  usb = require('usb');
 }
 
 var VENDOR_ID = 0x20a0,
